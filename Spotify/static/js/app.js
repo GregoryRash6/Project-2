@@ -2,7 +2,7 @@
 d3.json(`/dates`).then(data => {
 
     // Select & Save Dropdown 
-    var dropdown = d3.select("#selDataset")
+    var dropdown = d3.select("#selDate")
 
     // For Each Date
     data.forEach(entry => {
@@ -142,13 +142,13 @@ d3.json(`/dates`).then(data => {
 
                 // Create Gauge Chart Layout
                 var gaugeLayout = {
-                        width: 500,
-                        height: 400,
-                        paper_bgcolor: 'rgba(0,0,0,0)',
-                        plot_bgcolor: 'rgba(0,0,0,0)',
-                        font: { color: 'white' }
-                    }
-                    // Plot Gauge Chart
+                    width: 500,
+                    height: 400,
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { color: 'white' }
+                }
+                // Plot Gauge Chart
                 Plotly.newPlot('gauge', gaugeData, gaugeLayout, responsive = true)
             })
         })
@@ -225,7 +225,7 @@ d3.json(`/dates`).then(data => {
         loadPage(date)
 
         // On Change
-        d3.selectAll("#selDataset").on("change", function() {
+        d3.selectAll("#selDate").on("change", function () {
 
             // Select & Save Date from Dropdown
             var date = dropdown.property('value')
@@ -237,8 +237,8 @@ d3.json(`/dates`).then(data => {
 
     // Deploy Init Function
     init()
-        // jQuery CSS
-    $(document).ready(function() {
+    // jQuery CSS
+    $(document).ready(function () {
         $('#spotify-jumbotron').css("background-color", "black")
         $('#spotify-well').css("background-color", "black")
         $('#spotify-panel-default').css("background-color", "black")

@@ -1,7 +1,6 @@
 # Import Dependencies
 import os
 import pandas as pd
-import numpy as np
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
@@ -13,7 +12,8 @@ from config import password
 app = Flask(__name__)
 
 # Create Connection Engine
-engine = create_engine(f"postgresql://postgres:{password}@localhost:5432/spotify_db")
+engine = create_engine(
+    f"postgresql://postgres:{password}@localhost:5432/spotify_db")
 
 # Automap Base
 Base = automap_base()
@@ -40,7 +40,6 @@ def index():
 
 # Create Dates Route
 @app.route("/dates")
-
 # Define Dates Function
 def dates():
     """Returns List of Dates for Dropdown"""
@@ -52,10 +51,9 @@ def dates():
 
     # Perform SQL Query
     spotify_date = session.query(*sel)\
-    .order_by(Spotify.date.asc())\
-    .distinct()\
-    .all()
-    
+        .order_by(Spotify.date.asc())\
+        .distinct()\
+        .all()
 
     # Return Jsonified List
     return jsonify(list(spotify_date))
@@ -63,11 +61,10 @@ def dates():
 
 # Create Data Route
 @app.route("/data/<date>")
-
 # Define Data Function
 def data(date):
     """Returns Callable Data"""
-    
+
     # Selection Information
     sel = [
         Spotify.position,
@@ -79,10 +76,10 @@ def data(date):
 
     # Perform SQL Query
     spotify_data = session.query(*sel)\
-    .filter(Spotify.date == date)\
-    .filter(Spotify.region == "us")\
-    .filter(Spotify.position == 1)\
-    .all()
+        .filter(Spotify.date == date)\
+        .filter(Spotify.region == "us")\
+        .filter(Spotify.position == 1)\
+        .all()
 
     # Create a Dictionary Entry for each Row
     data_dict = {}
@@ -99,23 +96,22 @@ def data(date):
 
 # Create Streams Route
 @app.route("/bar/<track>/<date>")
-
 # Define Streams Function
 def streams(date, track):
     """Returns Data Needed for Bar Chart"""
-    
+
     # Selection Information
     sel = [
-        Spotify.streams, 
+        Spotify.streams,
         Spotify.region
     ]
 
     # Perform SQL Query
     spotify_streams = session.query(*sel)\
-    .filter(Spotify.track_name == track)\
-    .filter(Spotify.date == date)\
-    .order_by(Spotify.date.asc())\
-    .all()
+        .filter(Spotify.track_name == track)\
+        .filter(Spotify.date == date)\
+        .order_by(Spotify.date.asc())\
+        .all()
 
     # Returns Jsonified List
     return jsonify(list(spotify_streams))
@@ -123,11 +119,10 @@ def streams(date, track):
 
 # Create Gauge Route
 @app.route("/gauge/<track>")
-
 # Define Gauge Function
 def gauge(track):
     """Returns Data Needed for Gauge Chart"""
-    
+
     # Selection Information
     sel = [
         Spotify.track_name,
@@ -139,11 +134,11 @@ def gauge(track):
 
     # Perform SQL Query
     line_info = session.query(*sel)\
-    .filter(Spotify.region == "us")\
-    .filter(Spotify.position == 1)\
-    .filter(Spotify.track_name == track)\
-    .order_by(Spotify.date.asc())\
-    .all()
+        .filter(Spotify.region == "us")\
+        .filter(Spotify.position == 1)\
+        .filter(Spotify.track_name == track)\
+        .order_by(Spotify.date.asc())\
+        .all()
 
     # Return Jsonified List
     return jsonify(list(line_info))
@@ -151,11 +146,10 @@ def gauge(track):
 
 # Create Yearly Streams Route
 @app.route("/line/<track>")
-
 # Define Yearly Streams Function
 def yearlyStreams(track):
     """Returns Data Needed for Line Graph"""
-    
+
     # Selection Information
     sel = [
         Spotify.track_name,
@@ -167,10 +161,10 @@ def yearlyStreams(track):
 
     # Perform SQL Query
     line_info = session.query(*sel)\
-    .filter(Spotify.region == "us")\
-    .filter(Spotify.track_name == track)\
-    .order_by(Spotify.date.asc())\
-    .all()
+        .filter(Spotify.region == "us")\
+        .filter(Spotify.track_name == track)\
+        .order_by(Spotify.date.asc())\
+        .all()
 
     # Return Jsonified List
     return jsonify(list(line_info))
